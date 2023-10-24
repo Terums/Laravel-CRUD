@@ -1,0 +1,49 @@
+First is to Install laravel and composer to your device 
+Also install the Node and NPM for better ui configurations
+You can also install PHPMYADMIN and XAMPP for better Database configurations
+
+Locate the  xampp\htdocs\
+and dowload your folder in that location
+
+Openb your IDE and open the folder
+
+open terminal ctrl+`
+
+make sure your on your current directory and type php artisan migrate
+
+then you need to install laravel Breeze to generate user management
+composer require laravel/breeze --dev
+php artisan breeze:install
+ 
+php artisan migrate
+npm install
+npm run dev
+
+you might encounter UI ERROR and will show this on the upper part of the page @vite(['resources/css/app.css', 'resources/js/app.js'])
+just go to resources/views/layouts app.blade.php 
+and change the @vite(['resources/css/app.css', 'resources/js/app.js']) to <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <script src="{{ asset('js/app.js') }}" defer></script>
+and do the same thing on this file  guest.blade.php on the same folder
+
+
+Paste this on your routes/Web.php because when installing the breeze it can be reset your routing.
+//securing the view for NON_AUTHORIZE logins
+Route::middleware('auth')->group(function (){
+    
+    //routes all about task
+    Route::get('/task', [TaskController::class, 'index'])->name('task.index'); //the route that shows all task
+    Route::get('/task/new', [TaskController::class, 'newtask'])->name('task.newtask'); // route for generating new task
+    Route::post('/task', [TaskController::class, 'store'])->name('task.store'); // route for storing or posting  the task in the db
+    Route::get('/task/{tasks}/edit', [TaskController::class, 'edit'])->name('task.edit'); // getting the ID of the task on the DB and showing it
+    Route::put('/task/{tasks}/update', [TaskController::class, 'update'])->name('task.update');// also based on ID and will update the data
+    Route::delete('/task/{tasks}/delete', [TaskController::class, 'delete'])->name('task.delete');// deleteing the data
+    
+
+});
+
+then also paste this on the upper part to connect the controller to route.
+
+use App\Http\Controllers\TaskController;
+
+and Thats it. open XAMPP then start the apache and MySql then click ADMIN on MySql
+then you will find your database there named mywebapp which have different table like task, users etc... some of the table is automatically generated so dont be confused
